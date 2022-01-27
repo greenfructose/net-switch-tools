@@ -1,33 +1,38 @@
 import os
 
 from netmiko import ConnectHandler
-from secret import USERNAME, PASSWORD, DEVICE_TYPE
 from halo import Halo
 
 
-def get_connection(ip: str) -> ConnectHandler:
+class Connection(object):
     """
-    Connects to switch at provided IP using configured credentials.
-    :param ip: IP of switch as string
-    :return: Connection as ConnectHandler
+    Takes dict as argument and returns connection.
+    Dict format:
+    {'ip': SwitchIPAddress,
+    'device_type': SwitchType,  (refer to netmiko documentation for details)
+    'username': SwitchUsername,
+    'password': SwitchPassword
+    }
     """
-    connection = ConnectHandler(ip=ip,
-                                device_type=DEVICE_TYPE,
-                                username=USERNAME,
-                                password=PASSWORD)
-    return connection
+
+    def __init__(self, coninfo: dict):
+        self.coninfo = coninfo
+
+    def connect(self):
+        return ConnectHandler(**self.coninfo)
 
 
-def ping_from_switch(switch_ip: str, ip_list: list[str]) -> None:
+def ping_from_switch(switch_ip: str, ip_list: list[str], coninfo: dict) -> None:
     """
     Pings list of IPs from switch. Used primarily for populating ARP table.
+    :param coninfo: Dictionary of connection info
     :param switch_ip: IP of switch to ping from
     :param ip_list: List of IP addresses to ping
     :return: None
     """
     spinner = Halo(spinner='dots')
     spinner.start(f'\nConnecting to {switch_ip}')
-    connection = get_connection(switch_ip)
+    connection = Connection(coninfo).connect()
     spinner.succeed()
     spinner.stop()
     for ip in ip_list:
@@ -38,16 +43,17 @@ def ping_from_switch(switch_ip: str, ip_list: list[str]) -> None:
     connection.disconnect()
 
 
-def run_commands(ip: str, commands: list[str]) -> None:
+def run_commands(ip: str, commands: list[str], coninfo: dict) -> None:
     """
     Cycles through a list of 'show' commands to run on a switch
+    :param coninfo: Dictionary with connecion info
     :param ip: Address of switch as String
     :param commands: Command to run on switch
     :return: None
     """
     spinner = Halo(spinner='dots')
     spinner.start(f'Connecting to {ip}')
-    connection = get_connection(ip)
+    connection = Connection(coninfo).connect
     spinner.succeed()
     spinner.stop()
     for command in commands:
