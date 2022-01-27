@@ -1,6 +1,6 @@
 LICENSE
 pyproject.toml
-setup.cfg
+setup.py
 src/manage_switches/DoConcurrent.py
 src/manage_switches/DocFunctions.py
 src/manage_switches/NetworkFunctions.py

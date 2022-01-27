@@ -28,11 +28,11 @@ def write_result_csv(source: list[dict], method: str, prepend: str = None) -> No
         filename = f'{retrieve_name(source)}.csv'
     else:
         filename = f'{prepend}-{retrieve_name(source)}.csv'
-    file_empty = os.stat(filename).st_size == 0
+    file_exists = os.path.exists(filename)
     fieldnames = list(source[0].keys())
     with open(filename, method) as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator='\n', delimiter=',')
-        if file_empty:
+        if not file_exists:
             writer.writeheader()
         for data in source:
             writer.writerow(data)
