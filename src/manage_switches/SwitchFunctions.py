@@ -26,7 +26,7 @@ def ping_from_switch(coninfo: dict, ip_list: list[str]) -> None:
 
 def run_commands(coninfo: dict, commands: list[str]) -> None:
     """
-    Cycles through a list of 'show' commands to run on a switch
+    Cycles through a list of commands to run on a switch
     :param coninfo: Dictionary with connecion info
     :param commands: Command to run on switch
     :return: None
