@@ -11,7 +11,7 @@ import manage_switches.All
 
 coninfo = {
     'ip': 'IP_OF_SWITCH',
-    'device_type': 'TYPE_OF_DEVICE', # Refer to NetMiko docs to identify tour switch type
+    'device_type': 'TYPE_OF_DEVICE', # Refer to NetMiko docs for switch type
     'username': 'SWITCH_USERNAME',
     'password': 'SWITCH_PASSWORD'
 }
@@ -28,15 +28,15 @@ hostname = get_hostname_by_ip('192.168.1.5')
 
 ping_from_switch(coninfo, ip_list)
 
-# Run list of commands on switch. Writes output to file in CWD 'switch_{command_slug}/{switch_ip}
+# Run commands on switch. Writes output to D 'switch_{command_slug}/{switch_ip}
 
 run_commands(coninfo, ['show arp', 'show mac-address'])
 
-# Run functions concurrently. Currently only supports functions that take only an IP address as an argument
+# Run functions concurrently. Supports functions that take IP address as an arg
 
 multithread(get_hostname_by_ip, ip_list)
 
-# Write results of command that writes dictionary list to a CSV, saves file as {prepend}-{variable_name}.csv
+# Write results of command CSV, saves file as {prepend}-{variable_name}.csv
 
 result = [
     {'IP': '192.168.1.1', 'Hostname': 'router.local'},
