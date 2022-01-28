@@ -5,7 +5,7 @@ Python package for managing network switches
 ## Usage
 
 ```python
-import src.manage_switches.All
+import manage_switches.All
 
 # Connection info for logging in to switch
 
